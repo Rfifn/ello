@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->integer('price');
             $table->integer('stock');
-            $table->string('status');
+            $table->integer('status');
             $table->json('images')->nullable();
             $table->timestamps();
         });

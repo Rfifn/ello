@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -32,6 +33,10 @@ class ProductResource extends Resource
                 ->maxLength(255)
                 ->required()
                 ->label('Nama Barang'),
+            Forms\Components\Select::make('category_id')
+                ->relationship(name: 'category', titleAttribute: 'name')
+                ->preload()
+                ->searchable(),
             Forms\Components\TextInput::make('description')
                 ->required()
                 ->maxLength(255)
@@ -46,11 +51,12 @@ class ProductResource extends Resource
                 ->required()
                 ->numeric()
                 ->label('Stok Barang'),
-            Forms\Components\TextInput::make('status')
+            Forms\Components\Select::make('status')
                 ->required()
-                ->maxLength(255)
-                ->required()
-                ->label('Status'),
+                ->options([
+                    0 => 'Tersedia',
+                    1 => 'Tidak Tersedia',
+                ]),
             Forms\Components\FileUpload::make('images')
                 ->multiple()
                 ->image()
@@ -78,9 +84,15 @@ class ProductResource extends Resource
                 Tables\Columns\ImageColumn::make('images')
                     ->disk('public'),
                 Tables\Columns\TextColumn::make('status')
+                ->badge()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        '0' => 'Tersedia',
+                        '1' => 'Tidak Tersedia',
+                    })
             ])
             ->filters([
-                //
+                SelectFilter::make('category_id')
+                    ->relationship(name: 'category', titleAttribute: 'name')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
