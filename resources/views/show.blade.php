@@ -41,13 +41,13 @@
             <!-- Desktop Menu -->
             <ul class="hidden items-center gap-4 flex-shrink-0 sm:flex">
                 <li><a href="{{ url('dashboard') }}"
-                        class="font-bold text-blue-500 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-white dark:hover:text-white"
+                        class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-neutral-300 dark:hover:text-white"
                         aria-current="page">Beranda</a></li>
                 <li><a href="{{ url('product') }}"
                         class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-neutral-300 dark:hover:text-white">Produk</a>
                 </li>
-                <li><a href="{{ url('rent') }}"
-                        class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-neutral-300 dark:hover:text-white">Pesanan</a>
+                <li><a href="{{ url('show') }}"
+                        class="font-bold text-blue-500 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-white dark:hover:text-white">Pesanan</a>
                 </li>
                 <li><a href="{{ url('contact') }}"
                         class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-neutral-300 dark:hover:text-white">Hubungi</a>
@@ -60,8 +60,11 @@
                         @keydown.enter.prevent="openWithKeyboard = true" @keydown.down.prevent="openWithKeyboard = true"
                         class="rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:focus-visible:outline-white"
                         aria-controls="userMenu">
-                        <img src="https://penguinui.s3.amazonaws.com/component-assets/avatar-8.webp" alt="User Profile"
-                            class="size-10 rounded-full object-cover" />
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-8">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
                     </button>
                     <!-- User Dropdown -->
                     <ul x-cloak x-show="userDropDownIsOpen || openWithKeyboard" x-transition.opacity
@@ -79,9 +82,9 @@
                         <li><a href="{{ url('dashboard') }}"
                                 class="block bg-neutral-50 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-900/5 hover:text-neutral-900 focus-visible:bg-neutral-900/10 focus-visible:text-neutral-900 focus-visible:outline-none dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-50/5 dark:hover:text-white dark:focus-visible:bg-neutral-50/10 dark:focus-visible:text-white">Dashboard</a>
                         </li>
-                        <li><a href="{{ url('rent') }}"
+                        <li><a href="{{ url('show') }}"
                                 class="block bg-neutral-50 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-900/5 hover:text-neutral-900 focus-visible:bg-neutral-900/10 focus-visible:text-neutral-900 focus-visible:outline-none dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-50/5 dark:hover:text-white dark:focus-visible:bg-neutral-50/10 dark:focus-visible:text-white">Pesanan</a></li>
-                        <li><a href="#"
+                        <li><a href="{{ url('profile') }}"
                                 class="block bg-neutral-50 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-900/5 hover:text-neutral-900 focus-visible:bg-neutral-900/10 focus-visible:text-neutral-900 focus-visible:outline-none dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-50/5 dark:hover:text-white dark:focus-visible:bg-neutral-50/10 dark:focus-visible:text-white">Pengaturan</a>
                         </li>
                         <li><a href="#"
@@ -136,7 +139,7 @@
                 <li class="p-2"><a href="{{ url('product') }}"
                         class="w-full text-lg font-medium text-neutral-600 focus:underline dark:text-neutral-300">Produk</a>
                 </li>
-                <li class="p-2"><a href="{{ url('rent') }}"
+                <li class="p-2"><a href="{{ url('show') }}"
                         class="w-full text-lg font-medium text-neutral-600 focus:underline dark:text-neutral-300">Pesanan</a>
                 </li>
                 <li class="p-2"><a href="{{ url('contact') }}"
@@ -209,12 +212,17 @@
                                     @endswitch
                                 </span>
                             </td>
-                            {{-- <td class="p-4">
-                                <a href="/rentals/{{ $rental->id }}/edit" 
-                                   class="cursor-pointer whitespace-nowrap rounded-md bg-transparent p-0.5 font-semibold text-black outline-black hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:opacity-100 active:outline-offset-0 dark:text-white dark:outline-white">
-                                    Edit
-                                </a>
-                            </td> --}}
+                            <td class="p-4">
+                                <form method="POST" action="{{ route('rentals.destroy', $rental->id) }}" class="delete-rental-form inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" 
+                                            class="cursor-pointer whitespace-nowrap rounded-md bg-transparent p-0.5 font-semibold text-black outline-black hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:opacity-100 active:outline-offset-0 dark:text-white dark:outline-white">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                            
                         </tr>
                         @endforeach
                         @endforeach
@@ -223,7 +231,40 @@
             </div>
         </div>
     </div>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteForms = document.querySelectorAll('.delete-rental-form');
+            
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    if (confirm('Are you sure you want to delete this rental?')) {
+                        fetch(this.action, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.message) {
+                                // Remove the table row
+                                this.closest('tr').remove();
+                                // Optionally show a success message
+                                alert(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Error deleting rental');
+                        });
+                    }
+                });
+            });
+        });
+        </script>
 </body>
 
 </html>

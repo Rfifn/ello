@@ -81,7 +81,7 @@
                         </li>
                         <li><a href="{{ url('rent') }}"
                                 class="block bg-neutral-50 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-900/5 hover:text-neutral-900 focus-visible:bg-neutral-900/10 focus-visible:text-neutral-900 focus-visible:outline-none dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-50/5 dark:hover:text-white dark:focus-visible:bg-neutral-50/10 dark:focus-visible:text-white">Pesanan</a></li>
-                        <li><a href="#"
+                        <li><a href="{{ url('profile') }}"
                                 class="block bg-neutral-50 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-900/5 hover:text-neutral-900 focus-visible:bg-neutral-900/10 focus-visible:text-neutral-900 focus-visible:outline-none dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-50/5 dark:hover:text-white dark:focus-visible:bg-neutral-50/10 dark:focus-visible:text-white">Pengaturan</a>
                         </li>
                         <li><a href="#"
@@ -180,7 +180,7 @@
                 @foreach ( $products as $product )
                 <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
                     <div class="h-56 w-full">
-                        <a href="#">
+                        <a href="{{ route('rentals.create') }}">
                             <img class="mx-auto h-full dark:hidden"
                                 src="storage/{{ $product->images[0] }}"
                                 alt="" />
@@ -196,9 +196,8 @@
                             </div>
                         </div>
 
-                        <a href="#"
-                            class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">Rp {{ $product->price }}</a>
-
+                        <p class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">Rp {{ $product->price }}</p>
+                        <p class="text-sm font-semibold leading-tight text-gray-500 hover:underline dark:text-white">Stok barang {{ $product->stock }}</p>
                         <div class="mt-4 flex items-center justify-between gap-4 pb-5">
                             <p class="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white">{{ $product->name }}</p>
 
@@ -212,11 +211,16 @@
                                 </svg>
                                 Add to cart
                         </div>
-                        <a href="{{ route('rentals.create') }}">
+                        <a href="{{ route('rentals.create') }}" class="pr-4">
                             <button
                                     type="button"
                                     class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-sm">Sewa sekarang</button>
                                 </button>
+                        </a>
+                        <a href="{{ route('detail', $product) }}">
+                            <button type="button" class="inline-flex text-gray bg-transparent border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 hover:text-black rounded text-sm">
+                                Lihat Detail
+                            </button>
                         </a>
                     </div>
                 </div>
@@ -293,23 +297,6 @@
                 </div>
                 <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
                     <div>
-                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Kategori</h2>
-                        <ul class="text-gray-500 dark:text-gray-400 font-medium">
-                            <li class="mb-4">
-                                <a href="https://flowbite.com/" class="hover:underline">Kursi</a>
-                            </li>
-                            <li class="mb-4">
-                                <a href="https://tailwindcss.com/" class="hover:underline">Meja</a>
-                            </li>
-                            <li class="mb-4">
-                                <a href="https://tailwindcss.com/" class="hover:underline">Panggung</a>
-                            </li>
-                            <li>
-                                <a href="https://tailwindcss.com/" class="hover:underline">Lainnya</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
                         <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Daftar Isi</h2>
                         <ul class="text-gray-500 dark:text-gray-400 font-medium">
                             <li class="mb-4">
@@ -326,7 +313,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div>
+                    {{-- <div>
                         <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Legal</h2>
                         <ul class="text-gray-500 dark:text-gray-400 font-medium">
                             <li class="mb-4">
@@ -336,7 +323,7 @@
                                 <a href="#" class="hover:underline">Terms &amp; Conditions</a>
                             </li>
                         </ul>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
@@ -354,15 +341,6 @@
                         </svg>
                         <span class="sr-only">Facebook page</span>
                     </a>
-                    <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
-                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor" viewBox="0 0 21 16">
-                            <path
-                                d="M16.942 1.556a16.3 16.3 0 0 0-4.126-1.3 12.04 12.04 0 0 0-.529 1.1 15.175 15.175 0 0 0-4.573 0 11.585 11.585 0 0 0-.535-1.1 16.274 16.274 0 0 0-4.129 1.3A17.392 17.392 0 0 0 .182 13.218a15.785 15.785 0 0 0 4.963 2.521c.41-.564.773-1.16 1.084-1.785a10.63 10.63 0 0 1-1.706-.83c.143-.106.283-.217.418-.33a11.664 11.664 0 0 0 10.118 0c.137.113.277.224.418.33-.544.328-1.116.606-1.71.832a12.52 12.52 0 0 0 1.084 1.785 16.46 16.46 0 0 0 5.064-2.595 17.286 17.286 0 0 0-2.973-11.59ZM6.678 10.813a1.941 1.941 0 0 1-1.8-2.045 1.93 1.93 0 0 1 1.8-2.047 1.919 1.919 0 0 1 1.8 2.047 1.93 1.93 0 0 1-1.8 2.045Zm6.644 0a1.94 1.94 0 0 1-1.8-2.045 1.93 1.93 0 0 1 1.8-2.047 1.918 1.918 0 0 1 1.8 2.047 1.93 1.93 0 0 1-1.8 2.045Z" />
-                        </svg>
-                        <span class="sr-only">Discord community</span>
-                    </a>
-                    
                 </div>
             </div>
         </div>

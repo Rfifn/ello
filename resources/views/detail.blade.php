@@ -40,13 +40,13 @@
                         class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-neutral-300 dark:hover:text-white"
                         aria-current="page">Beranda</a></li>
                 <li><a href="{{ url('product') }}"
-                        class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-neutral-300 dark:hover:text-white">Produk</a>
+                        class="font-bold text-blue-500 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-white dark:hover:text-white">Produk</a>
                 </li>
                 <li><a href="{{ url('show') }}"
                         class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-neutral-300 dark:hover:text-white">Pesanan</a>
                 </li>
                 <li><a href="{{ url('contact') }}"
-                        class="font-bold text-blue-500 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-white dark:hover:text-white">Hubungi</a>
+                        class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-neutral-300 dark:hover:text-white">Hubungi</a>
                 </li>
 
                 <!-- User Pic -->
@@ -149,85 +149,103 @@
             </ul>
         </nav>
     </div>
-    <div>
-        <section class="text-gray-600 body-font relative">
-            <div class="container px-5 py-24 mx-auto flex sm:flex-nowrap flex-wrap">
-                <div
-                    class="lg:w-2/3 md:w-1/2 bg-gray-300 rounded-lg overflow-hidden sm:mr-10 p-10 flex items-end justify-start relative">
-                    <iframe width="100%" height="100%" class="absolute inset-0" frameborder="0" title="map"
-                        marginheight="0" marginwidth="0" scrolling="no"
-                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d247.52740590802492!2d110.41764777243893!3d-6.957508587082106!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sid!2sid!4v1737632394022!5m2!1sid!2sid"
-                        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"
-                        style="filter: grayscale(1) contrast(1.2) opacity(0.4);"></iframe>
-                    <div class="bg-white relative flex flex-wrap py-6 rounded shadow-md">
-                        <div class="lg:w-1/2 px-6">
-                            <h2 class="title-font font-semibold text-gray-900 tracking-widest text-xs">Alamat</h2>
-                            <p class="mt-1">Jl. Cumi-cumi II, Kelurahan Bandarharjo, Kecamatan Semarang Utara</p>
-                        </div>
-                        <div class="lg:w-1/2 px-6 mt-4 lg:mt-0">
-                            <h2 class="title-font font-semibold text-gray-900 tracking-widest text-xs">EMAIL</h2>
-                            <a class="text-indigo-500 leading-relaxed">example@email.com</a>
-                            <h2 class="title-font font-semibold text-gray-900 tracking-widest text-xs mt-4">Telepon
-                            </h2>
-                            <p class="leading-relaxed">+62 878-1272-1423</p>
-                        </div>
-                    </div>
+    {{-- end navbar --}}
+
+    {{-- Content --}}
+    <div class="pt-20">
+        {{-- @foreach ( $details as $detail ) --}}
+        <section class="py-8 bg-white md:py-16 dark:bg-gray-900 antialiased">
+            <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
+              <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
+                <div class="shrink-0 max-w-md lg:max-w-lg mx-auto w-full h-full">
+                    {{-- @dd($product->images[0]) --}}
+                  <img class="w-full" src="{{ url('storage/' . $product->images[0]) }}" alt="" />
                 </div>
-                
-    {{-- Footer --}}
-    <footer class="bg-white dark:bg-gray-900 pl-10 lg:pl-0">
-        <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
-            <div class="md:flex md:justify-between">
-                <div class="mb-6 md:mb-0">
-                    <a href="https://flowbite.com/" class="flex items-center">
-                        
-                        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"></span>
+        
+                <div class="mt-6 sm:mt-8 lg:mt-0">
+                  <h1
+                    class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"
+                  >
+                  {{ $product->name }}
+                  </h1>
+                  <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
+                    <p
+                      class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"
+                    >
+                    Rp {{ $product->price }}
+                    </p>
+        
+                    
+                  </div>
+        
+                  <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
+                    <a
+                      href="#"
+                      title=""
+                      class="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                      role="button"
+                    >
+                      <svg
+                        class="w-5 h-5 -ms-2 me-2"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"
+                        />
+                      </svg>
+                      Add to favorites
                     </a>
-                </div>
-                <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
-                    <div>
-                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Daftar Isi</h2>
-                        <ul class="text-gray-500 dark:text-gray-400 font-medium">
-                            <li class="mb-4">
-                                <a href="{{ url('dashboard') }}" class="hover:underline ">Dashboard</a>
-                            </li>
-                            <li class="mb-4">
-                                <a href="{{ url('product') }}" class="hover:underline">Produk</a>
-                            </li>
-                            <li class="mb-4">
-                                <a href="{{ url('show') }}" class="hover:underline">Pesanan</a>
-                            </li>
-                            <li class="mb-4">
-                                <a href="{{ url('contact') }}" class="hover:underline">Hubungi</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-            <div class="sm:flex sm:items-center sm:justify-between">
-                <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2025 <a
-                        href="https://flowbite.com/" class="hover:underline">Ganesha</a>. All Rights
-                    Reserved.</span>
-                <div class="flex mt-4 sm:justify-center sm:mt-0">
-                    <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">
-                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor" viewBox="0 0 8 19">
-                            <path fill-rule="evenodd"
-                                d="M6.135 3H8V0H6.135a4.147 4.147 0 0 0-4.142 4.142V6H0v3h2v9.938h3V9h2.021l.592-3H5V3.591A.6.6 0 0 1 5.592 3h.543Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <span class="sr-only">Facebook page</span>
+        
+                    <a
+                      href="#"
+                      title=""
+                      class="text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center"
+                      role="button"
+                    >
+                      <svg
+                        class="w-5 h-5 -ms-2 me-2"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
+                        />
+                      </svg>
+        
+                      Add to cart
                     </a>
-                    {{-- <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
-                        
-                        <span class="sr-only">Instagram community</span>
-                    </a> --}}
+                  </div>
+        
+                  <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
+        
+                  <p class="mb-6 text-gray-500 dark:text-gray-400">
+                    {{ $product->description }}
+                  </p>
                 </div>
+              </div>
             </div>
-        </div>
-    </footer>
+          </section>
+          {{-- @endforeach --}}
+    </div>
+
+    
 </body>
 
 </html>

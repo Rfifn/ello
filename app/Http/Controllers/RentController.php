@@ -15,3 +15,5 @@ class RentController extends Controller
         return view('rent');
     }
 }
+
+

@@ -24,6 +24,8 @@ class ProductController extends Controller
         return view('product', compact(['products', 'categories']));
     }
     
-    
-
+    public function detail(Product $product)
+{
+    return view('detail', compact('product'));
+}
 }

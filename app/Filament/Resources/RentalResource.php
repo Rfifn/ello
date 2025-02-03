@@ -25,6 +25,7 @@ use Livewire\Attributes\Title;
 use Carbon\Carbon;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
+use App\Services\StockManagementService;
 
 class RentalResource extends Resource
 {
@@ -117,12 +118,12 @@ class RentalResource extends Resource
                             '5' => 'Belum Diselesaikan',
                         })
                         ->color(fn (string $state): string => match ($state) {
-                            '0' => 'danger',
-                            '1' => 'success',
+                            '0' => 'gray',
+                            '1' => 'info',
                             '2' => 'warning',
-                            '3' => 'secondary',
+                            '3' => 'success',
                             '4' => 'dark',
-                            '5' => 'info',
+                            '5' => 'danger',
                         }),
                     TextColumn::make('description')
                 ])

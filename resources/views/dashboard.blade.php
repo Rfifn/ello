@@ -60,8 +60,9 @@
                         @keydown.enter.prevent="openWithKeyboard = true" @keydown.down.prevent="openWithKeyboard = true"
                         class="rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:focus-visible:outline-white"
                         aria-controls="userMenu">
-                        <img src="https://penguinui.s3.amazonaws.com/component-assets/avatar-8.webp" alt="User Profile"
-                            class="size-10 rounded-full object-cover" />
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>                          
                     </button>
                     <!-- User Dropdown -->
                     <ul x-cloak x-show="userDropDownIsOpen || openWithKeyboard" x-transition.opacity
@@ -80,8 +81,9 @@
                                 class="block bg-neutral-50 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-900/5 hover:text-neutral-900 focus-visible:bg-neutral-900/10 focus-visible:text-neutral-900 focus-visible:outline-none dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-50/5 dark:hover:text-white dark:focus-visible:bg-neutral-50/10 dark:focus-visible:text-white">Dashboard</a>
                         </li>
                         <li><a href="{{ url('show') }}"
-                                class="block bg-neutral-50 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-900/5 hover:text-neutral-900 focus-visible:bg-neutral-900/10 focus-visible:text-neutral-900 focus-visible:outline-none dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-50/5 dark:hover:text-white dark:focus-visible:bg-neutral-50/10 dark:focus-visible:text-white">Pesanan</a></li>
-                        <li><a href="#"
+                                class="block bg-neutral-50 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-900/5 hover:text-neutral-900 focus-visible:bg-neutral-900/10 focus-visible:text-neutral-900 focus-visible:outline-none dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-50/5 dark:hover:text-white dark:focus-visible:bg-neutral-50/10 dark:focus-visible:text-white">Pesanan</a>
+                        </li>
+                        <li><a href="{{ url('profile') }}"
                                 class="block bg-neutral-50 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-900/5 hover:text-neutral-900 focus-visible:bg-neutral-900/10 focus-visible:text-neutral-900 focus-visible:outline-none dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-50/5 dark:hover:text-white dark:focus-visible:bg-neutral-50/10 dark:focus-visible:text-white">Pengaturan</a>
                         </li>
                         <li><a href="#"
@@ -92,7 +94,7 @@
                                         {{ __('Log Out') }}
                                     </button>
                                 </form>
-                        </a></li>
+                            </a></li>
                     </ul>
                 </li>
             </ul>
@@ -131,7 +133,8 @@
                     </div>
                 </li>
                 <li class="p-2"><a href="{{ url('dashboard') }}"
-                        class="w-full text-lg font-bold text-black focus:underline dark:text-white"aria-current="page">Beranda</a></li>
+                        class="w-full text-lg font-bold text-black focus:underline dark:text-white"aria-current="page">Beranda</a>
+                </li>
                 <li class="p-2"><a href="{{ url('product') }}"
                         class="w-full text-lg font-medium text-neutral-600 focus:underline dark:text-neutral-300">Produk</a>
                 </li>
@@ -160,11 +163,15 @@
             <div class="text-center lg:w-2/3 w-full">
                 <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Penyewaan Alat Pesta Dengan
                     Harga Terjangkau</h1>
-                <p class="mb-8 leading-relaxed">MKami menyediakan berbagai kebutuhan pesta, mulai dari dekorasi mewah, meja dan kursi elegan, hingga pencahayaan yang kami sediakan. Dengan layanan lengkap, mudah, dan hemat, kami hadir untuk membuat acara Anda lebih spesial tanpa repot. Yuk, wujudkan momen tak terlupakan bersama Ganesha!</p>
+                <p class="mb-8 leading-relaxed">MKami menyediakan berbagai kebutuhan pesta, mulai dari dekorasi mewah,
+                    meja dan kursi elegan, hingga pencahayaan yang kami sediakan. Dengan layanan lengkap, mudah, dan
+                    hemat, kami hadir untuk membuat acara Anda lebih spesial tanpa repot. Yuk, wujudkan momen tak
+                    terlupakan bersama Ganesha!</p>
                 <div class="flex justify-center">
-                <a href="{{ url('product') }}">
-                <button class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Lihat
-                        Produk</button>
+                    <a href="{{ url('product') }}">
+                        <button
+                            class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Lihat
+                            Produk</button>
                 </div>
                 </a>
             </div>
@@ -367,15 +374,9 @@
                             </div>
                         </div>
                         <div
-                            class="sm:w-2/3 sm:pl-8 sm:py-8 sm:border-l border-gray-200 sm:border-t-0 border-t mt-4 pt-4 sm:mt-0 text-center sm:text-left">
-                            <p class="leading-relaxed text-lg mb-4">Meggings portland fingerstache lyft, post-ironic
-                                fixie man bun banh mi umami everyday carry hexagon locavore direct trade art party.
-                                Locavore small batch listicle gastropub farm-to-table lumbersexual salvia messenger bag.
-                                Coloring book flannel truffaut craft beer drinking vinegar sartorial, disrupt fashion
-                                axe normcore meh butcher. Portland 90's scenester vexillologist forage post-ironic
-                                asymmetrical, chartreuse disrupt butcher paleo intelligentsia pabst before they sold out
-                                four loko. 3 wolf moon brooklyn.</p>
-                            <a class="text-indigo-500 inline-flex items-center">Lihat Produk
+                            class="sm:w-2/3 sm:pl-8 sm:py-8 sm:border-l border-gray-200 sm:border-t-0 border-t mt-4 pt-16 sm:mt-0 text-center sm:text-left">
+                            <p class="leading-relaxed text-lg mb-4">Di Rental Ganesha kami menyediakan berbagai perlengkapan alat pesta dan pernikahan pada umumnya, seperti Tenda, panggung kursi dan meja para tamu serta pengantin yang lengkap dengan dekornya.</p>
+                            <a class="text-indigo-500 inline-flex items-center" href="{{ url('product') }}">Lihat Produk
                                 <svg fill="none" stroke="currentColor" stroke-linecap="round"
                                     stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2"
                                     viewBox="0 0 24 24">
@@ -406,23 +407,6 @@
                 </div>
                 <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
                     <div>
-                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Kategori</h2>
-                        <ul class="text-gray-500 dark:text-gray-400 font-medium">
-                            <li class="mb-4">
-                                <a href="https://flowbite.com/" class="hover:underline">Kursi</a>
-                            </li>
-                            <li class="mb-4">
-                                <a href="https://tailwindcss.com/" class="hover:underline">Meja</a>
-                            </li>
-                            <li class="mb-4">
-                                <a href="https://tailwindcss.com/" class="hover:underline">Panggung</a>
-                            </li>
-                            <li>
-                                <a href="https://tailwindcss.com/" class="hover:underline">Lainnya</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
                         <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Daftar Isi</h2>
                         <ul class="text-gray-500 dark:text-gray-400 font-medium">
                             <li class="mb-4">
@@ -432,14 +416,14 @@
                                 <a href="{{ url('product') }}" class="hover:underline">Produk</a>
                             </li>
                             <li class="mb-4">
-                                <a href="{{ url('rent') }}" class="hover:underline">Pesanan</a>
+                                <a href="{{ url('show') }}" class="hover:underline">Pesanan</a>
                             </li>
                             <li class="mb-4">
                                 <a href="{{ url('contact') }}" class="hover:underline">Hubungi</a>
                             </li>
                         </ul>
                     </div>
-                    <div>
+                    {{-- <div>
                         <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Legal</h2>
                         <ul class="text-gray-500 dark:text-gray-400 font-medium">
                             <li class="mb-4">
@@ -449,7 +433,7 @@
                                 <a href="#" class="hover:underline">Terms &amp; Conditions</a>
                             </li>
                         </ul>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
@@ -466,14 +450,6 @@
                                 clip-rule="evenodd" />
                         </svg>
                         <span class="sr-only">Facebook page</span>
-                    </a>
-                    <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
-                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor" viewBox="0 0 21 16">
-                            <path
-                                d="M16.942 1.556a16.3 16.3 0 0 0-4.126-1.3 12.04 12.04 0 0 0-.529 1.1 15.175 15.175 0 0 0-4.573 0 11.585 11.585 0 0 0-.535-1.1 16.274 16.274 0 0 0-4.129 1.3A17.392 17.392 0 0 0 .182 13.218a15.785 15.785 0 0 0 4.963 2.521c.41-.564.773-1.16 1.084-1.785a10.63 10.63 0 0 1-1.706-.83c.143-.106.283-.217.418-.33a11.664 11.664 0 0 0 10.118 0c.137.113.277.224.418.33-.544.328-1.116.606-1.71.832a12.52 12.52 0 0 0 1.084 1.785 16.46 16.46 0 0 0 5.064-2.595 17.286 17.286 0 0 0-2.973-11.59ZM6.678 10.813a1.941 1.941 0 0 1-1.8-2.045 1.93 1.93 0 0 1 1.8-2.047 1.919 1.919 0 0 1 1.8 2.047 1.93 1.93 0 0 1-1.8 2.045Zm6.644 0a1.94 1.94 0 0 1-1.8-2.045 1.93 1.93 0 0 1 1.8-2.047 1.918 1.918 0 0 1 1.8 2.047 1.93 1.93 0 0 1-1.8 2.045Z" />
-                        </svg>
-                        <span class="sr-only">Discord community</span>
                     </a>
                 </div>
             </div>

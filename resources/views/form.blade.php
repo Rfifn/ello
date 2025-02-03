@@ -41,12 +41,12 @@
             <!-- Desktop Menu -->
             <ul class="hidden items-center gap-4 flex-shrink-0 sm:flex">
                 <li><a href="{{ url('dashboard') }}"
-                        class="font-bold text-blue-500 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-white dark:hover:text-white"
+                        class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-neutral-300 dark:hover:text-white"
                         aria-current="page">Beranda</a></li>
                 <li><a href="{{ url('product') }}"
-                        class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-neutral-300 dark:hover:text-white">Produk</a>
+                        class="font-bold text-blue-500 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-white dark:hover:text-white">Produk</a>
                 </li>
-                <li><a href="{{ url('rent') }}"
+                <li><a href="{{ url('show') }}"
                         class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline dark:text-neutral-300 dark:hover:text-white">Pesanan</a>
                 </li>
                 <li><a href="{{ url('contact') }}"
@@ -60,8 +60,11 @@
                         @keydown.enter.prevent="openWithKeyboard = true" @keydown.down.prevent="openWithKeyboard = true"
                         class="rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:focus-visible:outline-white"
                         aria-controls="userMenu">
-                        <img src="https://penguinui.s3.amazonaws.com/component-assets/avatar-8.webp" alt="User Profile"
-                            class="size-10 rounded-full object-cover" />
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-8">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
                     </button>
                     <!-- User Dropdown -->
                     <ul x-cloak x-show="userDropDownIsOpen || openWithKeyboard" x-transition.opacity
@@ -79,9 +82,10 @@
                         <li><a href="{{ url('dashboard') }}"
                                 class="block bg-neutral-50 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-900/5 hover:text-neutral-900 focus-visible:bg-neutral-900/10 focus-visible:text-neutral-900 focus-visible:outline-none dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-50/5 dark:hover:text-white dark:focus-visible:bg-neutral-50/10 dark:focus-visible:text-white">Dashboard</a>
                         </li>
-                        <li><a href="{{ url('rent') }}"
-                                class="block bg-neutral-50 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-900/5 hover:text-neutral-900 focus-visible:bg-neutral-900/10 focus-visible:text-neutral-900 focus-visible:outline-none dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-50/5 dark:hover:text-white dark:focus-visible:bg-neutral-50/10 dark:focus-visible:text-white">Pesanan</a></li>
-                        <li><a href="#"
+                        <li><a href="{{ url('show') }}"
+                                class="block bg-neutral-50 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-900/5 hover:text-neutral-900 focus-visible:bg-neutral-900/10 focus-visible:text-neutral-900 focus-visible:outline-none dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-50/5 dark:hover:text-white dark:focus-visible:bg-neutral-50/10 dark:focus-visible:text-white">Pesanan</a>
+                        </li>
+                        <li><a href="{{ url('profile') }}"
                                 class="block bg-neutral-50 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-900/5 hover:text-neutral-900 focus-visible:bg-neutral-900/10 focus-visible:text-neutral-900 focus-visible:outline-none dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-50/5 dark:hover:text-white dark:focus-visible:bg-neutral-50/10 dark:focus-visible:text-white">Pengaturan</a>
                         </li>
                         <li><a href="#"
@@ -122,8 +126,6 @@
                 class="fixed max-h-svh overflow-y-auto inset-x-0 top-0 z-10 flex flex-col rounded-b-md border-b border-neutral-300 bg-neutral-50 px-8 pb-6 pt-10 dark:border-neutral-700 dark:bg-neutral-900 sm:hidden">
                 <li class="mb-4 border-none">
                     <div class="flex items-center gap-2 py-2">
-                        <img src="https://penguinui.s3.amazonaws.com/component-assets/avatar-8.webp"
-                            alt="User Profile" class="size-12 rounded-full object-cover" />
                         <div>
                             <span class="font-medium text-neutral-900 dark:text-white">{{ Auth::user()->name }}</span>
                             {{-- <p class="text-sm text-neutral-600 dark:text-neutral-300">alice.brown@gmail.com</p> --}}
@@ -136,7 +138,7 @@
                 <li class="p-2"><a href="{{ url('product') }}"
                         class="w-full text-lg font-medium text-neutral-600 focus:underline dark:text-neutral-300">Produk</a>
                 </li>
-                <li class="p-2"><a href="{{ url('rent') }}"
+                <li class="p-2"><a href="{{ url('show') }}"
                         class="w-full text-lg font-medium text-neutral-600 focus:underline dark:text-neutral-300">Pesanan</a>
                 </li>
                 <li class="p-2"><a href="{{ url('contact') }}"
@@ -158,211 +160,205 @@
         <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
             <div class="mx-auto max-w-5xl">
                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Formulir penyewaan</h2>
-
                 <div class="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12">
-                    
+                    @section('content')
+                        <div class="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                            <div class="bg-white rounded-lg shadow p-6">
+                                @if ($errors->any())
+                                    <div class="bg-red-50 text-red-500 p-4 rounded-lg mb-6">
+                                        <ul class="list-disc pl-5">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
 
-@section('content')
-<div class="max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-    <div class="bg-white rounded-lg shadow p-6">
-        <h2 class="text-2xl font-bold mb-6">Create New Rental</h2>
+                                <form action="{{ route('rentals.store') }}" method="POST">
+                                    @csrf
 
-        @if ($errors->any())
-        <div class="bg-red-50 text-red-500 p-4 rounded-lg mb-6">
-            <ul class="list-disc pl-5">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
+                                    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                        <div>
+                                            <label for="name"
+                                                class="block text-sm font-medium text-gray-700">Nama</label>
+                                            <input type="text" name="name" id="name"
+                                                value="{{ old('name') }}"
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                                required>
+                                        </div>
 
-        <form action="{{ route('rentals.store') }}" method="POST">
-            @csrf
-            
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                    <input type="text" name="name" id="name" value="{{ old('name') }}" 
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
-                </div>
+                                        <div>
+                                            <label for="phone_number"
+                                                class="block text-sm font-medium text-gray-700">Nomor telepon</label>
+                                            <input type="tel" name="phone_number" id="phone_number"
+                                                value="{{ old('phone_number') }}"
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                                required>
+                                        </div>
 
-                <div>
-                    <label for="phone_number" class="block text-sm font-medium text-gray-700">Phone Number</label>
-                    <input type="tel" name="phone_number" id="phone_number" value="{{ old('phone_number') }}"
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
-                </div>
+                                        <div class="md:col-span-2">
+                                            <label for="address"
+                                                class="block text-sm font-medium text-gray-700">Alamat</label>
+                                            <input type="text" name="address" id="address"
+                                                value="{{ old('address') }}"
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                        </div>
+                                    </div>
 
-                <div class="md:col-span-2">
-                    <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
-                    <input type="text" name="address" id="address" value="{{ old('address') }}"
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                </div>
-            </div>
+                                    <div class="mt-6">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <label class="block text-sm font-medium text-gray-700">Produk</label>
+                                            <button type="button" onclick="addProduct()"
+                                                class="inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                                                Tambah Produk
+                                            </button>
+                                        </div>
 
-            <div class="mt-6">
-                <div class="flex justify-between items-center mb-2">
-                    <label class="block text-sm font-medium text-gray-700">Rental Items</label>
-                    <button type="button" onclick="addProduct()" 
-                            class="inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                        Add Item
-                    </button>
-                </div>
+                                        <div id="rental-details">
+                                            <div class="rental-item flex space-x-4 mb-4">
+                                                <select name="rentalDetails[0][product_id]" required
+                                                    class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                                    <option value="">Pilih Product</option>
+                                                    @foreach ($products as $product)
+                                                        <option value="{{ $product->id }}"
+                                                            data-price="{{ $product->price }}">
+                                                            {{ $product->name }} (Stock: {{ $product->stock }})
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <input type="number" name="rentalDetails[0][quantity]" value="1"
+                                                    min="1" required
+                                                    class="w-24 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                            </div>
+                                        </div>
+                                    </div>
 
-                <div id="rental-details">
-                    <div class="rental-item flex space-x-4 mb-4">
-                        <select name="rentalDetails[0][product_id]" required
-                                class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            <option value="">Select Product</option>
-                            @foreach($products as $product)
-                                <option value="{{ $product->id }}" data-price="{{ $product->price }}">
-                                    {{ $product->name }} (Stock: {{ $product->stock }})
-                                </option>
-                            @endforeach
-                        </select>
-                        <input type="number" name="rentalDetails[0][quantity]" value="1" min="1" required
-                               class="w-24 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                    </div>
-                </div>
-            </div>
+                                    <div class="grid grid-cols-1 gap-6 mt-6 md:grid-cols-2">
+                                        <div>
+                                            <label for="start_time" class="block text-sm font-medium text-gray-700">Start
+                                                Date</label>
+                                            <input type="date" name="start_time" id="start_time"
+                                                value="{{ old('start_time') }}"
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                                required>
+                                        </div>
 
-            <div class="grid grid-cols-1 gap-6 mt-6 md:grid-cols-2">
-                <div>
-                    <label for="start_time" class="block text-sm font-medium text-gray-700">Start Date</label>
-                    <input type="date" name="start_time" id="start_time" value="{{ old('start_time') }}"
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
-                </div>
+                                        <div>
+                                            <label for="end_time" class="block text-sm font-medium text-gray-700">End
+                                                Date</label>
+                                            <input type="date" name="end_time" id="end_time"
+                                                value="{{ old('end_time') }}"
+                                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                                required>
+                                        </div>
+                                    </div>
 
-                <div>
-                    <label for="end_time" class="block text-sm font-medium text-gray-700">End Date</label>
-                    <input type="date" name="end_time" id="end_time" value="{{ old('end_time') }}"
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
-                </div>
-            </div>
+                                    <div class="mt-6">
+                                        <label for="description"
+                                            class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                                        <textarea name="description" id="description" rows="3" required
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ old('description') }}</textarea>
+                                    </div>
 
-            <div class="mt-6">
-                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                <textarea name="description" id="description" rows="3" required
-                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ old('description') }}</textarea>
-            </div>
+                                    <div class="mt-6">
+                                        <label class="block text-sm font-medium text-gray-700">Total Harga</label>
+                                        <input type="text" id="total_price" readonly
+                                            class="mt-1 block w-full rounded-md border-gray-300 bg-gray-50 shadow-sm">
+                                    </div>
 
-            <div class="mt-6">
-                <label class="block text-sm font-medium text-gray-700">Total Price</label>
-                <input type="text" id="total_price" readonly
-                       class="mt-1 block w-full rounded-md border-gray-300 bg-gray-50 shadow-sm">
-            </div>
-
-            <div class="mt-6 flex justify-end">
-                <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    Create Rental
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-@push('scripts')
-<script>
-    let productCount = 0;
-
-    function addProduct() {
-    productCount++;
-    const template = `
-        <div class="rental-item flex space-x-4 mb-4">
-            <select name="rentalDetails[${productCount}][product_id]" required
-                    class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    onchange="updateTotalPrice()">
-                <option value="">Select Product</option>
-                @foreach($products as $product)
-                    <option value="{{ $product->id }}" data-price="{{ $product->price }}">
-                        {{ $product->name }} (Stock: {{ $product->stock }})
-                    </option>
-                @endforeach
-            </select>
-            <input type="number" name="rentalDetails[${productCount}][quantity]" value="1" min="1" required
-                   class="w-24 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                   oninput="updateTotalPrice()">
-            <button type="button" onclick="removeProduct(this)" 
-                    class="text-red-600 hover:text-red-800">
-                Remove
-            </button>
-        </div>
-    `;
-    document.getElementById('rental-details').insertAdjacentHTML('beforeend', template);
-    updateTotalPrice();
-}
-
-
-    function removeProduct(button) {
-        button.closest('.rental-item').remove();
-        updateTotalPrice();
-    }
-
-    // Replace the existing updateTotalPrice function with this:
-    function updateTotalPrice() {
-    const startDate = new Date(document.getElementById('start_time').value);
-    const endDate = new Date(document.getElementById('end_time').value);
-    let days = 1;
-
-    if (!isNaN(startDate) && !isNaN(endDate) && endDate >= startDate) {
-        days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
-    }
-
-    let total = 0;
-    document.querySelectorAll('.rental-item').forEach(item => {
-        const select = item.querySelector('select');
-        const quantityInput = item.querySelector('input[type="number"]');
-        const price = parseFloat(select.options[select.selectedIndex]?.dataset?.price || 0);
-        const quantity = parseInt(quantityInput.value) || 0;
-
-        if (price > 0 && quantity > 0) {
-            total += price * quantity * days;
-        }
-    });
-
-    document.getElementById('total_price').value = `Rp ${total.toLocaleString()}`;
-}
-
-
-    // Add event listeners
-    document.addEventListener('input', updateTotalPrice);
-document.addEventListener('change', updateTotalPrice);
-document.addEventListener('DOMContentLoaded', updateTotalPrice);
-
-
-    // Initial calculation
-    updateTotalPrice();
-</script>
-@endpush
-
-                        <div class="mt-6 flex items-center justify-center gap-8">
-                            <img class="h-8 w-auto dark:hidden"
-                                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/paypal.svg"
-                                alt="" />
-                            <img class="hidden h-8 w-auto dark:flex"
-                                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/paypal-dark.svg"
-                                alt="" />
-                            <img class="h-8 w-auto dark:hidden"
-                                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/visa.svg"
-                                alt="" />
-                            <img class="hidden h-8 w-auto dark:flex"
-                                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/visa-dark.svg"
-                                alt="" />
-                            <img class="h-8 w-auto dark:hidden"
-                                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/mastercard.svg"
-                                alt="" />
-                            <img class="hidden h-8 w-auto dark:flex"
-                                src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/brand-logos/mastercard-dark.svg"
-                                alt="" />
+                                    <div class="mt-6 flex justify-end">
+                                        <button type="submit"
+                                            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                            Sewa Sekarang
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
+
+                        {{-- @push('scripts')
+                            
+                        @endpush --}}
+
+
                     </div>
                 </div>
 
             </div>
-        </div>
-    </section>
+            </div>
+        </section>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
+        <script>
+            let productCount = 0;
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
-</body>
+            function addProduct() {
+                productCount++;
+                const template = `
+<div class="rental-item flex space-x-4 mb-4">
+<select name="rentalDetails[${productCount}][product_id]" required
+class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+onchange="updateTotalPrice()">
+<option value="">Select Product</option>
+@foreach ($products as $product)
+<option value="{{ $product->id }}" data-price="{{ $product->price }}">
+    {{ $product->name }} (Stock: {{ $product->stock }})
+</option>
+@endforeach
+</select>
+<input type="number" name="rentalDetails[${productCount}][quantity]" value="1" min="1" required
+class="w-24 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+oninput="updateTotalPrice()">
+<button type="button" onclick="removeProduct(this)" 
+class="text-red-600 hover:text-red-800">
+Remove
+</button>
+</div>
+`;
+                document.getElementById('rental-details').insertAdjacentHTML('beforeend', template);
+                updateTotalPrice();
+            }
 
-</html>
+
+            function removeProduct(button) {
+                button.closest('.rental-item').remove();
+                updateTotalPrice();
+            }
+
+            // Replace the existing updateTotalPrice function with this:
+            function updateTotalPrice() {
+                const startDate = new Date(document.getElementById('start_time').value);
+                const endDate = new Date(document.getElementById('end_time').value);
+                let days = 1;
+
+                if (!isNaN(startDate) && !isNaN(endDate) && endDate >= startDate) {
+                    days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                }
+
+                let total = 0;
+                document.querySelectorAll('.rental-item').forEach(item => {
+                    const select = item.querySelector('select');
+                    const quantityInput = item.querySelector('input[type="number"]');
+                    const price = parseFloat(select.options[select.selectedIndex]?.dataset?.price || 0);
+                    const quantity = parseInt(quantityInput.value) || 0;
+
+                    if (price > 0 && quantity > 0) {
+                        total += price * quantity * days;
+                    }
+                });
+
+                document.getElementById('total_price').value = `Rp ${total.toLocaleString()}`;
+            }
+
+
+            // Add event listeners
+            document.addEventListener('input', updateTotalPrice);
+            document.addEventListener('change', updateTotalPrice);
+            document.addEventListener('DOMContentLoaded', updateTotalPrice);
+
+
+            // Initial calculation
+            updateTotalPrice();
+        </script>
+    </body>
+
+    </html>
