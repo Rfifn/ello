@@ -65,6 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/rentals/{rental}', [ShowController::class, 'destroy'])->name('rentals.destroy');
     Route::get('/detail/{product}', [DetailController::class, 'getDetail'])->name('detail');
     // Route::get('/product', [DetailController::class, 'getDetail'])->name('product');
+    Route::post('/rentals/{id}/cancel', [ShowController::class, 'cancel'])->name('rentals.cancel');
 });
 
 

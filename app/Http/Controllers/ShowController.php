@@ -7,6 +7,7 @@ use App\Models\History;
 use App\Models\Product;
 use App\Models\Rental;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ShowController extends Controller
 {
@@ -18,28 +19,32 @@ class ShowController extends Controller
     return view('show', compact('rentals')); // Use plural 'rentals'
 }
 
-public function destroy(Rental $rental)
-{
-    try {
-        // Check if user has permission to delete
-        if (!auth()->user()->can('delete', $rental)) {
-            return response()->json([
-                'message' => 'Unauthorized action.'
-            ], 403);
+    public function cancel($id)
+    {
+        try {
+            $rental = Rental::findOrFail($id);
+            
+            // Check if the rental belongs to the authenticated user
+            if ($rental->user_id !== Auth::id()) {
+                return redirect()->back()
+                    ->with('error', 'Anda tidak memiliki izin untuk membatalkan pesanan ini.');
+            }
+            
+            // Check if the rental can be cancelled (not already completed or cancelled)
+            if ($rental->status == 2 || $rental->status == 3 || $rental->status == 4) {
+                return redirect()->back()
+                    ->with('error', 'Pesanan tidak dapat dibatalkan karena status saat ini.');
+            }
+            
+            // Update the rental status to cancelled (4)
+            $rental->status = 4;
+            $rental->save();
+            
+            return redirect()->back()
+                ->with('success', 'Pesanan berhasil dibatalkan.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Terjadi kesalahan saat membatalkan pesanan.');
         }
-
-        // Delete the rental
-        $rental->delete();
-
-        return response()->json([
-            'message' => 'Rental deleted successfully'
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'message' => 'Error deleting rental'
-        ], 500);
     }
-}
-
-
 }

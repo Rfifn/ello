@@ -46,7 +46,19 @@ class RentalResource extends Resource
                     ->tel()
                     ->label('Telepon'),
                 TextInput::make('address')
-                ->label('Alamat'),
+                    ->label('Alamat'),
+                DatePicker::make('return_date')
+                    ->label('Tanggal Pengembalian')
+                    ->seconds(false)
+                    ->live()
+                    ->afterStateUpdated(function (Get $get, Set $set) {
+                        self::updatePrice($get, $set);
+                    })
+                    ->required(),
+                TextInput::make('late_fee')
+                    ->disabled()
+                    ->visible(fn (Get $get): bool => $get('status') == 3)
+                    ->label('Denda Keterlambatan'),
                 Select::make('user_id')
                     ->relationship(name: 'user', titleAttribute: 'name'),
                 TextInput::make('price')
@@ -120,9 +132,9 @@ class RentalResource extends Resource
                         ->color(fn (string $state): string => match ($state) {
                             '0' => 'gray',
                             '1' => 'info',
-                            '2' => 'warning',
+                            '2' => 'primary',
                             '3' => 'success',
-                            '4' => 'dark',
+                            '4' => 'warning',
                             '5' => 'danger',
                         }),
                     TextColumn::make('description')
@@ -148,28 +160,57 @@ class RentalResource extends Resource
     // Ambil harga produk dari database
     $prices = DB::table('products')->whereIn('id', $selectedProducts->pluck('product_id'))->pluck('price', 'id');
 
-    // Ambil start_time dan end_time dari input
+    // Ambil start_time, end_time, dan return_date dari input
     $startTime = $get('start_time');
     $endTime = $get('end_time');
+    $returnDate = $get('return_date');
+    $status = $get('status');
 
     // Periksa jika tanggal tidak valid
     if (!$startTime || !$endTime) {
-        $set('price', 0); // Jika tanggal tidak ada, total harga direset ke 0
+        $set('price', 0);
         return;
     }
 
+    // Convert dates to Carbon instances
+    $startDate = Carbon::parse($startTime);
+    $endDate = Carbon::parse($endTime);
+    
     // Hitung jumlah hari sewa, minimal 1 hari
-    $days = max(1, \Carbon\Carbon::parse($startTime)->diffInDays(\Carbon\Carbon::parse($endTime)));
+    $days = max(1, $startDate->diffInDays($endDate));
 
-    // Hitung total harga tanpa memperhatikan durasi
+    // Hitung total harga sewa dasar
     $baseTotal = $selectedProducts->reduce(function ($total, $product) use ($prices) {
         return $total + ($prices[$product['product_id']] * $product['quantity']);
     }, 0);
 
     // Hitung total harga berdasarkan jumlah hari
-    $totalPrice = $baseTotal * $days;
+    $rentalPrice = $baseTotal * $days;
 
-    // Set hasil total ke state 'price'
+    // Hitung late fee jika status adalah Dikembalikan (3) dan ada tanggal pengembalian
+    $lateFee = 0;
+    if ($status == 3 && $returnDate) {
+        $returnDateTime = Carbon::parse($returnDate);
+        
+        // Hitung berapa hari terlambat setelah 2 minggu
+        $twoWeeksAfterEnd = $endDate->copy()->addWeeks(2);
+        
+        // Hanya hitung late fee jika lebih dari 2 minggu terlambat
+        if ($returnDateTime->gt($twoWeeksAfterEnd)) {
+            $lateDays = $twoWeeksAfterEnd->diffInDays($returnDateTime);
+            
+            // Hitung late fee untuk setiap produk
+            $lateFee = $selectedProducts->reduce(function ($total, $product) use ($prices, $lateDays) {
+                $productPrice = $prices[$product['product_id']] ?? 0;
+                // Late fee adalah harga produk × jumlah × hari terlambat (setelah 2 minggu)
+                return $total + ($productPrice * $product['quantity'] * $lateDays);
+            }, 0);
+        }
+    }
+
+    // Set total harga termasuk late fee
+    $totalPrice = $rentalPrice + $lateFee;
+    $set('late_fee', $lateFee);
     $set('price', $totalPrice);
 }
 

@@ -157,114 +157,112 @@
     </div>
 
 
-
-    <div>
-        <div class="bg-white pb-10 pl-14 pr-14 rounded-lg pt-32">
-            <h1 class="text-left font-bold text-2xl sm:text-2xl md:text-2xl font-jakarta p-4">Riwayat Penyewaan</h1>
-        </div>
-        <div class="flex justify-center max-h-min pr-[72px] pl-[72px]">
-            <div class="overflow-hidden w-full overflow-x-auto rounded-md border border-neutral-300 dark:border-neutral-700">
-                <table class="w-full text-left text-sm text-neutral-600 dark:text-neutral-300">
-                    <thead class="border-b border-neutral-300 bg-neutral-50 text-sm text-neutral-900 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white">
-                        
-                        <tr>
-                            <th scope="col" class="p-4">User</th>
-                            <th scope="col" class="p-4">Produk</th>
-                            <th scope="col" class="p-4">Total Harga</th>
-                            <th scope="col" class="p-4">Mulai Sewa</th>
-                            <th scope="col" class="p-4">Akhir Sewa</th>
-                            <th scope="col" class="p-4">Status</th>
-                            <th scope="col" class="p-4">Lainnya</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-neutral-300 dark:divide-neutral-700">
-                        @foreach($rentals as $rental)
-                        @foreach($rental->details as $detail)
-                        <tr>
-                            <td class="p-4">
-                                <div class="flex w-max items-center gap-2">
-                                    <div class="flex flex-col">
-                                        <span class="text-neutral-900 dark:text-white">{{ $rental->name }}</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="p-4">{{ $detail->product->name }}</td>
-                            <td class="p-4">Rp {{ number_format($rental->price) }}</td>
-                            <td class="p-4">{{ Carbon\Carbon::parse($rental->start_time)->format('d/m/Y h.i.s A') }}</td>
-                            <td class="p-4">{{ Carbon\Carbon::parse($rental->end_time)->format('d/m/Y h.i.s A') }}</td>
-                            <td class="p-4">
-                                <span class="inline-flex overflow-hidden rounded-md border px-1 py-0.5 text-xs font-medium 
-                                    @if($rental->status == 0) border-yellow-500 text-yellow-500 bg-yellow-500/10
-                                    @elseif($rental->status == 1) border-blue-500 text-blue-500 bg-blue-500/10
-                                    @elseif($rental->status == 2) border-green-500 text-green-500 bg-green-500/10
-                                    @elseif($rental->status == 3) border-gray-500 text-gray-500 bg-gray-500/10
-                                    @elseif($rental->status == 4) border-red-500 text-red-500 bg-red-500/10
-                                    @else border-purple-500 text-purple-500 bg-purple-500/10 @endif">
-                                    
-                                    @switch($rental->status)
-                                        @case(0) Belum Dikonfirmasi @break
-                                        @case(1) Dikonfirmasi @break
-                                        @case(2) Disewa @break
-                                        @case(3) Dikembalikan @break
-                                        @case(4) Dibatalkan @break
-                                        @case(5) Belum Diselesaikan @break
-                                        @default Tidak Diketahui
-                                    @endswitch
+    <div class="min-h-screen bg-neutral-50 dark:bg-neutral-900 pt-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-6">
+                Riwayat Penyewaan
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                @foreach($rentals as $rental)
+                <div class="bg-white dark:bg-neutral-800 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-700 overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col h-full">
+                    <!-- Header -->
+                    <div class="p-4 border-b border-neutral-200 dark:border-neutral-700">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-neutral-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                <span class="font-medium text-neutral-900 dark:text-white">
+                                    {{ $rental->name }}
                                 </span>
-                            </td>
-                            <td class="p-4">
-                                <form method="POST" action="{{ route('rentals.destroy', $rental->id) }}" class="delete-rental-form inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" 
-                                            class="cursor-pointer whitespace-nowrap rounded-md bg-transparent p-0.5 font-semibold text-black outline-black hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:opacity-100 active:outline-offset-0 dark:text-white dark:outline-white">
-                                        Delete
-                                    </button>
-                                </form>
-                            </td>
-                            
-                        </tr>
-                        @endforeach
-                        @endforeach
-                    </tbody>
-                </table>
+                            </div>
+                            <span class="inline-flex px-2 py-1 text-xs font-medium rounded-full
+                                @if($rental->status == 0) border-yellow-500 text-yellow-500 bg-yellow-500/10
+                                @elseif($rental->status == 1) border-blue-500 text-blue-500 bg-blue-500/10
+                                @elseif($rental->status == 2) border-green-500 text-green-500 bg-green-500/10
+                                @elseif($rental->status == 3) border-gray-500 text-gray-500 bg-gray-500/10
+                                @elseif($rental->status == 4) border-red-500 text-red-500 bg-red-500/10
+                                @else border-purple-500 text-purple-500 bg-purple-500/10 @endif">
+                                @switch($rental->status)
+                                    @case(0) Belum Dikonfirmasi @break
+                                    @case(1) Dikonfirmasi @break
+                                    @case(2) Disewa @break
+                                    @case(3) Dikembalikan @break
+                                    @case(4) Dibatalkan @break
+                                    @case(5) Belum Diselesaikan @break
+                                    @default Tidak Diketahui
+                                @endswitch
+                            </span>
+                        </div>
+                    </div>
+    
+                    <!-- Content -->
+                    <div class="p-4 space-y-4 flex-grow">
+                        <!-- Products -->
+                        <div class="flex items-start gap-2">
+                            <svg class="w-4 h-4 text-neutral-500 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            </svg>
+                            <div class="flex-1">
+                                <div class="text-sm text-neutral-600 dark:text-neutral-300">
+                                    @foreach($rental->details as $detail)
+                                        <div>{{ $detail->product->name }} ({{ $detail->quantity }}x)</div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- Price -->
+                        <div class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-neutral-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                            </svg>
+                            <span class="text-sm font-medium text-neutral-900 dark:text-white">
+                                Rp {{ number_format($rental->price) }}
+                            </span>
+                        </div>
+    
+                        <!-- Rental Period -->
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-neutral-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span class="text-sm text-neutral-600 dark:text-neutral-300">
+                                    Mulai: {{ Carbon\Carbon::parse($rental->start_time)->format('d/m/Y h.i.s A') }}
+                                </span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-neutral-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="text-sm text-neutral-600 dark:text-neutral-300">
+                                    Selesai: {{ Carbon\Carbon::parse($rental->end_time)->format('d/m/Y h.i.s A') }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Footer -->
+                    <div class="p-4 border-t border-neutral-200 dark:border-neutral-700 mt-auto">
+                        <form method="POST" action="{{ route('rentals.cancel', $rental->id) }}" class="w-full">
+                            @csrf
+                            <button type="submit" 
+                                    class="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 rounded-md hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors duration-200"
+                                    onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')">
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Batalkan Pesanan
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                @endforeach
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const deleteForms = document.querySelectorAll('.delete-rental-form');
-            
-            deleteForms.forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    if (confirm('Are you sure you want to delete this rental?')) {
-                        fetch(this.action, {
-                            method: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                                'Accept': 'application/json'
-                            }
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.message) {
-                                // Remove the table row
-                                this.closest('tr').remove();
-                                // Optionally show a success message
-                                alert(data.message);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Error deleting rental');
-                        });
-                    }
-                });
-            });
-        });
-        </script>
 </body>
 
 </html>
