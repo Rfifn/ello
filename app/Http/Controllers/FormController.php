@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\RentalDetail;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class FormController extends Controller
 {
@@ -48,10 +49,11 @@ class FormController extends Controller
 
         // Create rental
         $rental = Rental::create([
+            'user_id' => Auth::id(),
             'name' => $request->name,
             'phone_number' => $request->phone_number,
             'address' => $request->address,
-            'user_id' => auth()->id(),
+            // 'user_id' => auth()->id(),
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
             'status' => 0, // Unconfirmed

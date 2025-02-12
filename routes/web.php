@@ -36,9 +36,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [HomeController::class, 'getProductHome'])->name('dashboard');
 
     // Route::get('/form/{id}', [FormController::class, 'index'])->name('form');
-    Route::get('/cart', [CartController::class, 'index'])->name('cart');
-    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-    Route::get('/cart', [CartController::class, 'view'])->name('cart.view');
     // Show the form to create a new rental
     Route::get('/rentals/create', [FormController::class, 'create'])->name('rentals.create');
 
