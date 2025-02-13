@@ -1,7 +1,7 @@
 <section class="bg-gray-50 py-8 antialiased dark:bg-gray-900 md:py-12">
     <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
         <div class="mb-4 items-end justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
-            <h2 class="pt-20 mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Electronics
+            <h2 class="pt-20 mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Produk
             </h2>
         </div>
         <div class="flex items-center space-x-4 pb-10">
@@ -46,7 +46,7 @@
                         </div>
                     </div>
 
-                    <p class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">Rp {{ $product->price }}</p>
+                    <p class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">Rp {{ number_format($product->price, 0, '', '.') }}</p>
                     <p class="text-sm font-semibold leading-tight text-gray-500 hover:underline dark:text-white">Stok barang {{ $product->stock }}</p>
                     <div class="mt-4 flex items-center justify-between gap-4 pb-5">
                         <p class="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white">{{ $product->name }}</p>
@@ -81,7 +81,7 @@
                     <div class="relative rounded-lg bg-white shadow dark:bg-gray-800">
                         <!-- Modal header -->
                         <div class="flex items-start justify-between rounded-t p-4 md:p-5">
-                            <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Filters</h3>
+                            <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Filter</h3>
                             <button type="button"
                                 class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
                                 data-modal-toggle="filterModal">
@@ -90,7 +90,7 @@
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                         stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
                                 </svg>
-                                <span class="sr-only">Close modal</span>
+                                <span class="sr-only">Tutup</span>
                             </button>
                         </div>
                         <!-- Modal body -->
@@ -101,7 +101,7 @@
                                     <li class="mr-1" role="presentation">
                                         <button class="inline-block pb-2 pr-1" id="brand-tab"
                                             data-tabs-target="#brand" type="button" role="tab"
-                                            aria-controls="profile" aria-selected="false">Brand</button>
+                                            aria-controls="profile" aria-selected="false">Barang</button>
                                     </li>
                                 </ul>
                             </div>
@@ -118,7 +118,7 @@
                                                 {{ $category->name }} </label>
                                         </div>
                                         @endforeach
-                                        <button type="submit" class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-sm">Submit</button>
+                                        <button type="submit" class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-sm">Kirim</button>
                                         </button>
                                     </div>
                                 </div>
