@@ -21,6 +21,7 @@
             </button>
         </div>
         <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
+            @if(count($products) > 0)
             @foreach ( $products as $product )
             <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
                 <div class="h-56 w-full">
@@ -40,7 +41,7 @@
                     <div class="mb-4 flex items-center justify-between gap-4">
                         <div class="flex items-center justify-end gap-1">
                             <span class="px-2 py-1 text-white text-sm font-semibold rounded 
-                            {{ $product->status == 0 ? 'bg-green-500' : 'bg-red-500' }}">
+                            {{ $product->status == 0 ? 'bg-green-400' : 'bg-red-400' }}">
                             {{ $product->status == 0 ? 'Tersedia' : 'Tidak Tersedia' }}
                         </span>
                         </div>
@@ -75,57 +76,64 @@
                 </div>
             </div>
             @endforeach
-            <form action="#" method="get" id="filterModal" tabindex="-1" aria-hidden="true" class="fixed left-0 right-0 top-0 z-50 hidden h-modal w-full overflow-y-auto overflow-x-hidden p-4 md:inset-0 md:h-full">
-                <div class="relative h-full w-full max-w-xl md:h-auto">
-                    <!-- Modal content -->
-                    <div class="relative rounded-lg bg-white shadow dark:bg-gray-800">
-                        <!-- Modal header -->
-                        <div class="flex items-start justify-between rounded-t p-4 md:p-5">
-                            <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Filter</h3>
-                            <button type="button"
-                                class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
-                                data-modal-toggle="filterModal">
-                                <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
-                                </svg>
-                                <span class="sr-only">Tutup</span>
-                            </button>
-                        </div>
-                        <!-- Modal body -->
-                        <div class="px-4 md:px-5">
-                            <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-                                <ul class="-mb-px flex flex-wrap text-center text-sm font-medium" id="myTab"
-                                    data-tabs-toggle="#myTabContent" role="tablist">
-                                    <li class="mr-1" role="presentation">
-                                        <button class="inline-block pb-2 pr-1" id="brand-tab"
-                                            data-tabs-target="#brand" type="button" role="tab"
-                                            aria-controls="profile" aria-selected="false">Barang</button>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div id="myTabContent">
-                                <div class="grid grid-cols-2 gap-4 md:grid-cols-3" id="brand" role="tabpanel"
-                                    aria-labelledby="brand-tab">
-                                    <div class="space-y-2 pb-5">
-                                        @foreach ( $categories as $category )
-                                        <div class="flex items-center pb-2">
-                                            <input id="{{ $category->name }}" name="category_id[]" type="radio" value="{{ $category->id }}"
-                                                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-                                            <label for="{{ $category->name }}"
-                                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                {{ $category->name }} </label>
-                                        </div>
-                                        @endforeach
-                                        <button type="submit" class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-sm">Kirim</button>
-                                        </button>
-                                    </div>
+            @else
+                <div class="col-span-full text-center py-8 pt-20">
+                    <p class="text-lg text-gray-600 dark:text-gray-400 pb-[197px]">Barang tidak tersedia</p>
+                </div>
+            @endif
+            <form action="#" method="get" id="filterModal" tabindex="-1" aria-hidden="true" 
+            class="fixed left-0 right-0 top-0 z-50 hidden h-modal w-full overflow-y-auto overflow-x-hidden p-4 md:inset-0 md:h-full">
+            <div class="relative h-full w-full max-w-xl md:h-auto">
+                <div class="relative rounded-lg bg-white shadow dark:bg-gray-800">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between rounded-t p-4 md:p-5">
+                        <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Filter</h3>
+                        <button type="button"
+                            class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+                            data-modal-toggle="filterModal">
+                            <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
+                            </svg>
+                            <span class="sr-only">Tutup</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Modal body -->
+                    <div class="px-4 md:px-5">
+                        <div class="grid grid-cols-2 gap-4 md:grid-cols-3" id="brand" role="tabpanel">
+                            <div class="space-y-2 pb-5">
+                                <div class="flex items-center pb-2">
+                                    <input id="all-categories" name="category_id" type="radio" value=""
+                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                                        {{ !request('category_id') ? 'checked' : '' }} />
+                                    <label for="all-categories"
+                                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                        Semua Kategori
+                                    </label>
                                 </div>
+                                @foreach ($categories as $category)
+                                <div class="flex items-center pb-2">
+                                    <input id="category-{{ $category->id }}" name="category_id" type="radio" 
+                                        value="{{ $category->id }}"
+                                        {{ request('category_id') == $category->id ? 'checked' : '' }}
+                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+                                    <label for="category-{{ $category->id }}"
+                                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                        {{ $category->name }}
+                                    </label>
+                                </div>
+                                @endforeach
+                                <button type="submit" 
+                                    class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-sm">
+                                    Terapkan Filter
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
+        </form>
         </div>
 </section>
