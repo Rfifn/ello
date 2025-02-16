@@ -6,6 +6,9 @@ use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -13,6 +16,13 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Columns\TextColumn;
 
 class ProductResource extends Resource
 {
@@ -28,36 +38,36 @@ class ProductResource extends Resource
     {
         return $form
         ->schema([
-            Forms\Components\TextInput::make('name')
+            TextInput::make('name')
                 ->required()
                 ->maxLength(255)
                 ->required()
                 ->label('Nama Barang'),
-            Forms\Components\Select::make('category_id')
+            Select::make('category_id')
                 ->relationship(name: 'category', titleAttribute: 'name')
                 ->preload()
                 ->searchable(),
-            Forms\Components\TextInput::make('description')
+            TextInput::make('description')
                 ->required()
                 ->maxLength(255)
                 ->required()
                 ->label('Deskripsi'),
-            Forms\Components\TextInput::make('price')
+            TextInput::make('price')
                 ->required()
                 ->numeric()
                 ->step(100)
                 ->label('Harga Barang (per-satuan dalam bentuk rupiah)'),
-            Forms\Components\TextInput::make('stock')
+            TextInput::make('stock')
                 ->required()
                 ->numeric()
                 ->label('Stok Barang'),
-            Forms\Components\Select::make('status')
+            Select::make('status')
                 ->required()
                 ->options([
                     0 => 'Tersedia',
                     1 => 'Tidak Tersedia',
                 ]),
-            Forms\Components\FileUpload::make('images')
+            FileUpload::make('images')
                 ->multiple()
                 ->image()
                 ->imageEditor()
@@ -75,28 +85,39 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
+                    ->searchable()
+                    ->description(fn (Product $record): string => $record->description),
+                TextColumn::make('price')
+                    ->money('IDR'),
+                TextColumn::make('stock')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description'),
-                Tables\Columns\TextColumn::make('price'),
-                Tables\Columns\TextColumn::make('stock')
-                    ->searchable(),
-                Tables\Columns\ImageColumn::make('images')
-                    ->disk('public'),
-                Tables\Columns\TextColumn::make('status')
-                ->badge()
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                ImageColumn::make('images')
+                    ->disk('public')
+                    ->circular()
+                    ->stacked(),
+                SelectColumn::make('status')
+                    ->options([
                         '0' => 'Tersedia',
                         '1' => 'Tidak Tersedia',
-                    })
+                    ]),
             ])
             ->filters([
                 SelectFilter::make('category_id')
                     ->relationship(name: 'category', titleAttribute: 'name')
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+            ActionGroup::make([
+                ViewAction::make('show')
+                    ->icon('heroicon-o-eye')
+                    ->label('Lihat'),
+                EditAction::make(),
+                DeleteAction::make()
+                    ->label('Hapus')
+                    ->icon('heroicon-o-trash'),
+            ]),
+            // ...
+        ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

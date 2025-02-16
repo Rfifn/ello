@@ -26,7 +26,10 @@ use Carbon\Carbon;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
 use App\Services\StockManagementService;
-
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 class RentalResource extends Resource
 {
     protected static ?string $model = Rental::class;
@@ -112,13 +115,18 @@ class RentalResource extends Resource
     {
         return $table
             ->columns([
-
+                Split::make([
                     TextColumn::make('name')
-                        ->searchable(),
-                    TextColumn::make('price'),
-                        TextColumn::make('start_time'),
-                        TextColumn::make('end_time'),
-                    
+    ->searchable()
+    ->description(fn (Rental $record): string =>$record->rentalDetails->pluck('product.name')->join(', ')),
+                    TextColumn::make('price')
+                        ->money('IDR'),
+                        Stack::make([
+                        TextColumn::make('start_time')
+                        ->dateTime('d-m-Y'),
+                        TextColumn::make('end_time')
+                        ->dateTime('d-m-Y'),
+                        ]),
                     TextColumn::make('status')
                         ->badge()
                         ->formatStateUsing(fn (string $state): string => match ($state) {
@@ -138,12 +146,21 @@ class RentalResource extends Resource
                             '5' => 'danger',
                         }),
                     TextColumn::make('description')
+                ]),
                 ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+                    ViewAction::make('show')
+                        ->icon('heroicon-o-eye')
+                        ->label('Lihat'),
+                    EditAction::make(),
+                    DeleteAction::make()
+                        ->label('Hapus')
+                        ->icon('heroicon-o-trash'),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
