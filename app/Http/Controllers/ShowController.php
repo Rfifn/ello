@@ -14,7 +14,7 @@ class ShowController extends Controller
     public function show()
 {
     $rentals = Rental::with(['details.product', 'user'])
-        ->where('user_id', auth()->id())
+        ->where('user_id', Auth::id())
         ->get();
     return view('show', compact('rentals')); // Use plural 'rentals'
 }

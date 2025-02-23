@@ -30,6 +30,7 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
+
 class RentalResource extends Resource
 {
     protected static ?string $model = Rental::class;
@@ -56,11 +57,10 @@ class RentalResource extends Resource
                     ->live()
                     ->afterStateUpdated(function (Get $get, Set $set) {
                         self::updatePrice($get, $set);
-                    })
-                    ->required(),
+                    }),
                 TextInput::make('late_fee')
                     ->disabled()
-                    ->visible(fn (Get $get): bool => $get('status') == 3)
+                    ->visible(fn(Get $get): bool => $get('status') == 3)
                     ->label('Denda Keterlambatan'),
                 Select::make('user_id')
                     ->relationship(name: 'user', titleAttribute: 'name'),
@@ -73,7 +73,7 @@ class RentalResource extends Resource
                     ->required()
                     ->label('Waktu mulai'),
                 Select::make('status')
-                    ->required()    
+                    ->required()
                     ->options([
                         0 => 'Belum Dikonfirmasi',
                         1 => 'Dikonfirmasi',
@@ -104,7 +104,7 @@ class RentalResource extends Resource
                     ->afterStateUpdated(function (Get $get, Set $set) {
                         self::updatePrice($get, $set);
                     }),
-                    
+
                 TextInput::make('description')
                     ->required()
                     ->label('Deskripsi'),
@@ -117,19 +117,19 @@ class RentalResource extends Resource
             ->columns([
                 Split::make([
                     TextColumn::make('name')
-    ->searchable()
-    ->description(fn (Rental $record): string =>$record->rentalDetails->pluck('product.name')->join(', ')),
+                        ->searchable()
+                        ->description(fn(Rental $record): string => $record->rentalDetails->pluck('product.name')->join(', ')),
                     TextColumn::make('price')
                         ->money('IDR'),
-                        Stack::make([
+                    Stack::make([
                         TextColumn::make('start_time')
-                        ->dateTime('d-m-Y'),
+                            ->dateTime('d-m-Y'),
                         TextColumn::make('end_time')
-                        ->dateTime('d-m-Y'),
-                        ]),
+                            ->dateTime('d-m-Y'),
+                    ]),
                     TextColumn::make('status')
                         ->badge()
-                        ->formatStateUsing(fn (string $state): string => match ($state) {
+                        ->formatStateUsing(fn(string $state): string => match ($state) {
                             '0' => 'Belum Dikonfirmasi',
                             '1' => 'Dikonfirmasi',
                             '2' => 'Disewa',
@@ -137,7 +137,7 @@ class RentalResource extends Resource
                             '4' => 'Dibatalkan',
                             '5' => 'Belum Diselesaikan',
                         })
-                        ->color(fn (string $state): string => match ($state) {
+                        ->color(fn(string $state): string => match ($state) {
                             '0' => 'gray',
                             '1' => 'info',
                             '2' => 'primary',
@@ -147,7 +147,7 @@ class RentalResource extends Resource
                         }),
                     TextColumn::make('description')
                 ]),
-                ])
+            ])
             ->filters([
                 //
             ])
@@ -168,68 +168,68 @@ class RentalResource extends Resource
                 ]),
             ]);
     }
-    
+
     public static function updatePrice(Get $get, Set $set): void
-{
-    // Ambil data produk yang valid
-    $selectedProducts = collect($get('rentalDetails'))->filter(fn($item) => !empty($item['product_id']) && !empty($item['quantity']));
-    
-    // Ambil harga produk dari database
-    $prices = DB::table('products')->whereIn('id', $selectedProducts->pluck('product_id'))->pluck('price', 'id');
+    {
+        // Ambil data produk yang valid
+        $selectedProducts = collect($get('rentalDetails'))->filter(fn($item) => !empty($item['product_id']) && !empty($item['quantity']));
 
-    // Ambil start_time, end_time, dan return_date dari input
-    $startTime = $get('start_time');
-    $endTime = $get('end_time');
-    $returnDate = $get('return_date');
-    $status = $get('status');
+        // Ambil harga produk dari database
+        $prices = DB::table('products')->whereIn('id', $selectedProducts->pluck('product_id'))->pluck('price', 'id');
 
-    // Periksa jika tanggal tidak valid
-    if (!$startTime || !$endTime) {
-        $set('price', 0);
-        return;
-    }
+        // Ambil start_time, end_time, dan return_date dari input
+        $startTime = $get('start_time');
+        $endTime = $get('end_time');
+        $returnDate = $get('return_date');
+        $status = $get('status');
 
-    // Convert dates to Carbon instances
-    $startDate = Carbon::parse($startTime);
-    $endDate = Carbon::parse($endTime);
-    
-    // Hitung jumlah hari sewa, minimal 1 hari
-    $days = max(1, $startDate->diffInDays($endDate));
-
-    // Hitung total harga sewa dasar
-    $baseTotal = $selectedProducts->reduce(function ($total, $product) use ($prices) {
-        return $total + ($prices[$product['product_id']] * $product['quantity']);
-    }, 0);
-
-    // Hitung total harga berdasarkan jumlah hari
-    $rentalPrice = $baseTotal * $days;
-
-    // Hitung late fee jika status adalah Dikembalikan (3) dan ada tanggal pengembalian
-    $lateFee = 0;
-    if ($status == 3 && $returnDate) {
-        $returnDateTime = Carbon::parse($returnDate);
-        
-        // Hitung berapa hari terlambat setelah 2 minggu
-        $twoWeeksAfterEnd = $endDate->copy()->addWeeks(2);
-        
-        // Hanya hitung late fee jika lebih dari 2 minggu terlambat
-        if ($returnDateTime->gt($twoWeeksAfterEnd)) {
-            $lateDays = $twoWeeksAfterEnd->diffInDays($returnDateTime);
-            
-            // Hitung late fee untuk setiap produk
-            $lateFee = $selectedProducts->reduce(function ($total, $product) use ($prices, $lateDays) {
-                $productPrice = $prices[$product['product_id']] ?? 0;
-                // Late fee adalah harga produk × jumlah × hari terlambat (setelah 2 minggu)
-                return $total + ($productPrice * $product['quantity'] * $lateDays);
-            }, 0);
+        // Periksa jika tanggal tidak valid
+        if (!$startTime || !$endTime) {
+            $set('price', 0);
+            return;
         }
-    }
 
-    // Set total harga termasuk late fee
-    $totalPrice = $rentalPrice + $lateFee;
-    $set('late_fee', $lateFee);
-    $set('price', $totalPrice);
-}
+        // Convert dates to Carbon instances
+        $startDate = Carbon::parse($startTime);
+        $endDate = Carbon::parse($endTime);
+
+        // Hitung jumlah hari sewa, minimal 1 hari
+        $days = max(1, $startDate->diffInDays($endDate));
+
+        // Hitung total harga sewa dasar
+        $baseTotal = $selectedProducts->reduce(function ($total, $product) use ($prices) {
+            return $total + ($prices[$product['product_id']] * $product['quantity']);
+        }, 0);
+
+        // Hitung total harga berdasarkan jumlah hari
+        $rentalPrice = $baseTotal * $days;
+
+        // Hitung late fee jika status adalah Dikembalikan (3) dan ada tanggal pengembalian
+        $lateFee = 0;
+        if ($status == 3 && $returnDate) {
+            $returnDateTime = Carbon::parse($returnDate);
+
+            // Hitung berapa hari terlambat setelah 2 minggu
+            $twoWeeksAfterEnd = $endDate->copy()->addWeeks(2);
+
+            // Hanya hitung late fee jika lebih dari 2 minggu terlambat
+            if ($returnDateTime->gt($twoWeeksAfterEnd)) {
+                $lateDays = $twoWeeksAfterEnd->diffInDays($returnDateTime);
+
+                // Hitung late fee untuk setiap produk
+                $lateFee = $selectedProducts->reduce(function ($total, $product) use ($prices, $lateDays) {
+                    $productPrice = $prices[$product['product_id']] ?? 0;
+                    // Late fee adalah harga produk × jumlah × hari terlambat (setelah 2 minggu)
+                    return $total + ($productPrice * $product['quantity'] * $lateDays);
+                }, 0);
+            }
+        }
+
+        // Set total harga termasuk late fee
+        $totalPrice = $rentalPrice + $lateFee;
+        $set('late_fee', $lateFee);
+        $set('price', $totalPrice);
+    }
 
 
     public static function getRelations(): array

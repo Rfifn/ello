@@ -18,7 +18,6 @@ class FormController extends Controller
                           ->where('stock', '>', 0)
                           ->get();
         $categories = Category::all();
-        // dd($products);
         return view('form', compact('products', 'categories'));
     }
 
@@ -36,14 +35,23 @@ class FormController extends Controller
             'rentalDetails.*.quantity' => 'required|integer|min:1'
         ]);
 
-        // Calculate total price
+        // Calculate total price with new logic
         $totalPrice = 0;
+        $startDate = Carbon::parse($request->start_time);
+        $endDate = Carbon::parse($request->end_time);
+        
+        // Add one day to start date to exclude the rental day
+        $effectiveStartDate = $startDate->copy()->addDay();
+        
+        // Calculate days between effective start date and end date
+        $days = $effectiveStartDate->diffInDays($endDate) + 1;
+        $days = max(0, $days);
+
         foreach ($request->rentalDetails as $detail) {
             $product = Product::find($detail['product_id']);
             if ($product->stock < $detail['quantity']) {
                 return back()->withErrors(['message' => "Insufficient stock for {$product->name}"]);
             }
-            $days = Carbon::parse($request->start_time)->diffInDays(Carbon::parse($request->end_time)) + 1;
             $totalPrice += $product->price * $detail['quantity'] * $days;
         }
 
@@ -53,7 +61,6 @@ class FormController extends Controller
             'name' => $request->name,
             'phone_number' => $request->phone_number,
             'address' => $request->address,
-            // 'user_id' => auth()->id(),
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
             'status' => 0, // Unconfirmed
@@ -73,21 +80,24 @@ class FormController extends Controller
                   ->decrement('stock', $detail['quantity']);
         }
 
-        return redirect()->route('rentals.show', $rental)
+        return redirect()->route('show')
                         ->with('success', 'Rental created successfully');
     }
 
     public function show(Rental $rental)
-{
-    // Load the relationships to avoid N+1 queries
-    $rental->load(['details.product', 'user']);
+    {
+        // Load the relationships to avoid N+1 queries
+        $rental->load(['details.product', 'user']);
 
-    // Calculate rental duration in days
-    $startDate = Carbon::parse($rental->start_time);
-    $endDate = Carbon::parse($rental->end_time);
-    $duration = $startDate->diffInDays($endDate) + 1;
-    $rentals = Rental::with(['details.product', 'user'])->get();
+        // Calculate rental duration with new logic
+        $startDate = Carbon::parse($rental->start_time);
+        $endDate = Carbon::parse($rental->end_time);
+        $effectiveStartDate = $startDate->copy()->addDay();
+        $duration = $effectiveStartDate->diffInDays($endDate) + 1;
+        $duration = max(0, $duration);
+        
+        $rentals = Rental::with(['details.product', 'user'])->get();
 
-    return view('show', compact('rental', 'rentals', 'duration'));
-}
+        return view('show', compact('rental', 'rentals', 'duration'));
+    }
 }

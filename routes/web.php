@@ -16,7 +16,7 @@ use App\Models\Detail;
 use Filament\Forms\Form;
 
 Route::get('/', function () {
-    return view('auth.login');
+    return view('dashboard');
 });
 
 Route::get('/dashboard', function () {
